@@ -121,6 +121,7 @@ const AddPost = (props) => {
       setPosts([...posts, post]);
       toast.success(`${post.title} has been published!`);
       setThumbnail("");
+      setPreview("");
       history.push("/dashboard/articles");
     } catch (e) {
       toast.error("Something's happened. Please try again.");
@@ -153,8 +154,10 @@ const AddPost = (props) => {
       const updatedUserPosts = await getUserPosts();
       setUserPosts(updatedUserPosts);
 
-      toast.success(`"${title}" has been updated successfully!`);
       setThumbnail("");
+      setPreview("");
+      toast.success(`"${title}" has been updated successfully!`);
+      history.push("/dashboard/articles");
     } catch (e) {
       toast.error("Something's happened. Please try again.");
     }

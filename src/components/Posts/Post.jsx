@@ -103,10 +103,10 @@ const Post = (props) => {
                 <a href={author ? author.social.facebook : "# "}>
                   <i className="fab fa-facebook-square fa-2x"></i>
                 </a>
-                <a href="# ">
+                <a href={author ? author.social.twitter : "# "}>
                   <i className="fab fa-twitter-square fa-2x"></i>
                 </a>
-                <a href="# ">
+                <a href={author ? author.social.instagram : "# "}>
                   <i className="fab fa-instagram-square fa-2x"></i>
                 </a>
               </div>
