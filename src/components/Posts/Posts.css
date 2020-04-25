@@ -1,0 +1,30 @@
+.DraftEditor-root div .public-DraftStyleDefault-block {
+  text-align: justify;
+  font-weight: 400;
+}
+
+.DraftEditor-root h1 .public-DraftStyleDefault-block {
+  text-align: left;
+  font-weight: 600 !important;
+}
+
+blockquote {
+  padding: 8px;
+  padding-left: 16px;
+  color: #919191;
+  border-left: 2px solid #568cff;
+  font-style: italic;
+}
+
+/* CODEBLOCK */
+
+.public-DraftStyleDefault-pre {
+  background-color: #252525;
+}
+
+.public-DraftStyleDefault-pre pre {
+  padding: 2px 8px;
+  margin-bottom: 0;
+  background-color: #252525;
+  color: #eaeaea;
+}
