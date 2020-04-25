@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useForm from "../CustomHooks/useForm";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import { login } from "../../services/authServices";
 
 const Login = (props) => {
+  useEffect(() => {
+    document.title = "Login - Readnow";
+  });
+
   const doSubmit = async () => {
     try {
       const data = await login(inputs.email, inputs.password);

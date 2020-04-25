@@ -37,9 +37,6 @@ const DisplayFeatured = ({ pageData }) => {
                       <p className="article-summary text-justify mt-3 d-none d-sm-none d-md-block">
                         {post.summary}
                       </p>
-                      <button className="btn btn-primary d-none d-sm-none d-md-block">
-                        Read more
-                      </button>
                     </div>
 
                     <div className="article-content-bot">

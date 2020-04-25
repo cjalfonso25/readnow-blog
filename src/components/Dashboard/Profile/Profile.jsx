@@ -29,6 +29,10 @@ const Profile = () => {
   const { user, setUser: setProviderUser } = useContext(UserContext);
 
   useEffect(() => {
+    document.title = "Profile - Readnow";
+  });
+
+  useEffect(() => {
     if (user) {
       setName(user.name);
       setTitle(user.title);

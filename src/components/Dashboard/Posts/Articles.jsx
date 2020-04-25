@@ -4,9 +4,14 @@ import { toast } from "react-toastify";
 import { deleteUserPost } from "../../../services/postServices";
 import Moment from "react-moment";
 import UserContext from "../../context/UserContext";
+import { useEffect } from "react";
 
 const Articles = () => {
   const { posts, userPosts, setPosts, setUserPosts } = useContext(UserContext);
+
+  useEffect(() => {
+    document.title = "Posts - Readnow";
+  }, []);
 
   const handleDelete = async (id) => {
     try {

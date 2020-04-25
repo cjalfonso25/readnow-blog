@@ -36,6 +36,7 @@ const AddPost = (props) => {
   const { userPosts, posts, setUserPosts, setPosts } = useContext(UserContext);
 
   useEffect(() => {
+    document.title = "Add New Post - Readnow";
     async function fetchData() {
       const post = await getUserPost(id);
       setEditPost(post);

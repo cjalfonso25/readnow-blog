@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Main = () => {
+  useEffect(() => {
+    document.title = "Dashboard - Readnow";
+  }, []);
+
   return (
     <>
       <div className="row">

@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense, useContext } from "react";
+import React, { useState, useEffect, lazy, Suspense, useContext } from "react";
 import Pagination from "../common/Pagination";
 import Spinner from "../common/Spinner";
 import UserContext from "../context/UserContext";
@@ -6,6 +6,10 @@ import UserContext from "../context/UserContext";
 const DisplayArticles = lazy(() => import("./PostAll"));
 
 const Posts = () => {
+  useEffect(() => {
+    document.title = "Articles - Readnow";
+  });
+
   const { posts } = useContext(UserContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(6);

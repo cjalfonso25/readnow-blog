@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Contact = () => {
+  useEffect(() => {
+    document.title = "Contact Us - Readnow";
+  });
+
   return (
     <div className="main-contact">
       <div className="container">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
@@ -9,6 +9,9 @@ import Post from "../Posts/Post";
 import Contact from "../Contact/Contact";
 
 const Home = () => {
+  useEffect(() => {
+    document.title = "Home - Readnow";
+  });
   return (
     <>
       <Navbar />
