@@ -2,7 +2,7 @@
 
 Readnow is a blog site developed using ReactJS and NodeJS/Express.
 
-Server link:
+Server link: [Click here](https://github.com/cjalfonso25/readnow-server)
 
 ### Try it out!
 
