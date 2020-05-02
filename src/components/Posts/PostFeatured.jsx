@@ -10,7 +10,14 @@ const DisplayFeatured = ({ pageData }) => {
     <>
       {pageData.map((post) => (
         <div key={post._id} className="col-12">
-          <Link to={`/articles/${post._id}`}>
+          <Link
+            to={{
+              pathname: `/articles/${post.title
+                .toLowerCase()
+                .replace(/\s+/g, "_")}`,
+              state: { id: post._id },
+            }}
+          >
             <div className="article">
               <div className="row">
                 <div className="col-12 col-md-6">
@@ -20,11 +27,6 @@ const DisplayFeatured = ({ pageData }) => {
                     ) : (
                       "Loading..."
                     )}
-
-                    {/* <img
-                      src={`http://localhost:5000/api/posts/${post._id}/thumbnail`}
-                      alt=""
-                    /> */}
                   </Suspense>
                 </div>
                 <div className="col-12 col-md-6">

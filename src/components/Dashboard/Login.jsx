@@ -1,37 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useForm from "../CustomHooks/useForm";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import { login } from "../../services/authServices";
+import "./Login.css";
+import { Link } from "react-router-dom";
 
 const Login = (props) => {
+  const [error, setError] = useState("");
+
   useEffect(() => {
     document.title = "Login - Readnow";
   });
 
   const doSubmit = async () => {
     try {
-      const data = await login(inputs.email, inputs.password);
+      const data = await login(inputs.username, inputs.password);
 
-      if (data) {
+      if (data.user) {
         props.history.push("/dashboard");
       }
+
+      setError("");
     } catch (e) {
-      return null;
+      setError("Invalid username or password.");
     }
   };
 
   const { inputs, handleInputChange, handleSubmit } = useForm(doSubmit);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="login-container">
-        <div className="container">
+    <div className="container">
+      <form onSubmit={handleSubmit}>
+        <div className="login-container">
+          <h1>Dashboard Login</h1>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
           <Input
             type="text"
-            label="Email address"
-            name="email"
-            value={inputs.email || ""}
+            label="Username"
+            name="username"
+            value={inputs.username || ""}
             onChange={handleInputChange}
             required="required"
           />
@@ -45,10 +57,17 @@ const Login = (props) => {
             required="required"
           />
 
-          <Button type="submit" label="Login" className="btn-primary" />
+          <Link to="/login/problem">Forgot Username?</Link>
+          <Link to="/login/problem">Forgot Password?</Link>
+
+          <Button
+            type="submit"
+            label="Login"
+            className="btn-primary btn-login"
+          />
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

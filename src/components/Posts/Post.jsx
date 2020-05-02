@@ -15,7 +15,7 @@ const Post = (props) => {
   const [author, setAuthor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const postId = props.match.params.id;
+  const postId = props.location.state.id;
 
   useEffect(() => {
     async function fetchData() {

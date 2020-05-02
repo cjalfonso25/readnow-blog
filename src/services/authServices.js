@@ -23,9 +23,9 @@ export const getJwt = () => {
   return localStorage.getItem(tokenKey);
 };
 
-export const login = async (email, password) => {
+export const login = async (username, password) => {
   const credentials = {
-    email,
+    username: username.toLowerCase(),
     password,
   };
   const { data } = await axios.post(`${apiUrl}/users/login`, credentials);
@@ -42,10 +42,22 @@ export const logout = async () => {
   localStorage.removeItem(tokenKey);
 };
 
+export const verifyMembershipNo = async (membershipNo) => {
+  const { data } = await axios.post(`${apiUrl}/users/verify`, membershipNo);
+  return data;
+};
+
+export const verifyUsername = async (username) => {
+  const { data } = await axios.post(`${apiUrl}/users/verify`, username);
+  return data;
+};
+
 export default {
   getAuthor,
   getCurrentUser,
   getJwt,
   login,
   logout,
+  verifyMembershipNo,
+  verifyUsername,
 };

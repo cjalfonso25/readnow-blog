@@ -79,6 +79,34 @@ const Sidebar = () => {
                 <li className="menu__sub-item">Add Post</li>
               </NavLink>
             </ul>
+            {user.isAdmin ? (
+              <li
+                className="menu__item d-flex justify-content-between align-items-center"
+                data-toggle="collapse"
+                href="#users__sub-menu"
+                role="button"
+                aria-expanded="false"
+                aria-controls="users__sub-menu"
+              >
+                <div>
+                  <i className="fas fa-users"></i> <span>Users</span>
+                </div>
+
+                <i className="fas fa-chevron-down"></i>
+              </li>
+            ) : null}
+
+            <ul
+              className="list-unstyled collapse menu__sub-menu"
+              id="users__sub-menu"
+            >
+              <NavLink to="/dashboard/user_list">
+                <li className="menu__sub-item">View Users</li>
+              </NavLink>
+              <NavLink to="/dashboard/users/add">
+                <li className="menu__sub-item">Add New User</li>
+              </NavLink>
+            </ul>
             <NavLink to="/dashboard/settings">
               <li className="menu__item">
                 <i className="fas fa-cogs"></i> Settings

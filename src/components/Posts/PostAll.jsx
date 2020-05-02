@@ -8,7 +8,14 @@ const DisplayArticles = ({ pageData }) => {
     <>
       {pageData.map((post) => (
         <div key={post._id} className="col-12 col-md-4">
-          <Link to={`/articles/${post._id}`}>
+          <Link
+            to={{
+              pathname: `/articles/${post.title
+                .toLowerCase()
+                .replace(/\s+/g, "_")}`,
+              state: { id: post._id },
+            }}
+          >
             <div className="article">
               {post.thumbnail ? (
                 <Thumbnail className="w-100" image={post.thumbnail} />

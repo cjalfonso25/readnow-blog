@@ -14,6 +14,7 @@ import {
   createPost,
   updatePost,
   getPosts,
+  getPost,
   getUserPosts,
 } from "../../../services/postServices";
 import { apiUrl } from "../../../config.json";
@@ -28,7 +29,6 @@ const AddPost = (props) => {
   const [thumbnail, setThumbnail] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [editPost, setEditPost] = useState("");
-  const [loaded, setLoaded] = useState(0);
   const [preview, setPreview] = useState("");
   const history = useHistory();
   const id = props.match.params.id;
@@ -111,12 +111,12 @@ const AddPost = (props) => {
       summary: summary,
       content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
       category: category,
-      thumbnail: "",
       isFeatured,
     };
 
     try {
-      const post = await createPost(obj, data);
+      const res = await createPost(obj, data);
+      const post = await getPost(res._id);
 
       setUserPosts([...userPosts, post]);
       setPosts([...posts, post]);
@@ -167,7 +167,6 @@ const AddPost = (props) => {
   const handleFileSelect = (e) => {
     setPreview(URL.createObjectURL(e.target.files[0]));
     setThumbnail(e.target.files[0]);
-    setLoaded(0);
   };
 
   return (
@@ -206,7 +205,7 @@ const AddPost = (props) => {
               <input
                 type="text"
                 className="form-control"
-                id="summray"
+                id="summary"
                 placeholder="Summary"
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
@@ -240,6 +239,7 @@ const AddPost = (props) => {
                     </button>
                   ))}
                 </div>
+
                 <Editor
                   placeholder="Enter your content here"
                   ref={editor}
@@ -271,8 +271,11 @@ const AddPost = (props) => {
                 </button>
               ) : (
                 <button
-                  onClick={() => handleAdd()}
+                  onClick={
+                    title == "" || summary == "" ? null : () => handleAdd()
+                  }
                   className="btn btn-sm btn-primary"
+                  disabled={title == "" || summary == "" ? "disabled" : false}
                 >
                   Publish Now
                 </button>

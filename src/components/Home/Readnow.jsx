@@ -34,18 +34,24 @@ const Readnow = () => {
 
       <div className="featured-articles">
         <div className="container">
-          <Suspense fallback={<Spinner />}>
-            <div className="row">
-              <DisplayFeatured pageData={pageData} />
-            </div>
+          {featuredPosts.length > 0 ? (
+            <Suspense fallback={<Spinner />}>
+              <div className="row">
+                <DisplayFeatured pageData={pageData} />
+              </div>
 
-            <Pagination
-              totalPosts={featuredPosts.length}
-              currentPage={currentPage}
-              postPerPage={postPerPage}
-              paginate={paginate}
-            />
-          </Suspense>
+              <Pagination
+                totalPosts={featuredPosts.length}
+                currentPage={currentPage}
+                postPerPage={postPerPage}
+                paginate={paginate}
+              />
+            </Suspense>
+          ) : (
+            <div className="text-center">
+              <small className="text-muted">No featured posts available</small>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -9,15 +9,37 @@ import PrivateRoute from "./components/Routes/PrivateRoute";
 import UserContext from "./components/context/UserContext";
 import { getPosts } from "./services/postServices";
 import "./App.css";
+import Problem from "./components/Auth/Problem";
+import Otp from "./components/Auth/Otp";
+import SetNewPassword from "./components/Auth/SetNewPassword";
 
 function App() {
   const [user, setUser] = useState("");
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
+  const [userList, setUserList] = useState([]);
 
   const providerValue = useMemo(
-    () => ({ user, userPosts, posts, setUser, setUserPosts, setPosts }),
-    [user, userPosts, posts, setUser, setUserPosts, setPosts]
+    () => ({
+      user,
+      userPosts,
+      posts,
+      userList,
+      setUserList,
+      setUser,
+      setUserPosts,
+      setPosts,
+    }),
+    [
+      user,
+      userPosts,
+      posts,
+      userList,
+      setUserList,
+      setUser,
+      setUserPosts,
+      setPosts,
+    ]
   );
 
   useEffect(() => {
@@ -33,7 +55,10 @@ function App() {
   return (
     <UserContext.Provider value={providerValue}>
       <Switch>
+        <Route path="/set-new-password" component={SetNewPassword} />
+        <Route path="/otp" component={Otp} />
         <Route path="/logout" component={Logout} />
+        <Route path="/login/problem" component={Problem} />
         <Route path="/login" component={Login} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PublicRoute path="/" component={Home} />

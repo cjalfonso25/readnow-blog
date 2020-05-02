@@ -51,7 +51,16 @@ const Articles = () => {
                     <tr key={post._id}>
                       <th scope="row">{i + 1}</th>
                       <td>
-                        <Link to={`/articles/${post._id}`}>{post.title}</Link>
+                        <Link
+                          to={{
+                            pathname: `/articles/${post.title
+                              .toLowerCase()
+                              .replace(/\s+/g, "_")}`,
+                            state: { id: post._id },
+                          }}
+                        >
+                          {post.title}
+                        </Link>
                       </td>
                       <td>
                         <Moment format="MMM D, YYYY">
