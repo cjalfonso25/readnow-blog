@@ -7,8 +7,12 @@ Server link: [Click here](https://github.com/cjalfonso25/readnow-server)
 ### Try it out!
 
 Got to url/dashboard
-Email: admin@readnow.com
-Password: 1234567
+
+
+Username: test
+
+
+Password: test123
 
 ## Status
 
