@@ -1,5 +1,6 @@
 {
   "name": "readnow-blog",
+  "homepage": "http://cj-alfonso.com/projects/readnow",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

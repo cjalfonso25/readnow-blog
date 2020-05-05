@@ -8,13 +8,9 @@ import { useEffect } from "react";
 
 const Users = () => {
   const { user, userList, userPosts } = useContext(UserContext);
-  const [list, setList] = useState([]);
 
   useEffect(() => {
     document.title = "Users - Readnow";
-
-    // const users = await getUsers();
-    // setList(users)
   }, []);
 
   const handleDelete = async (id) => {

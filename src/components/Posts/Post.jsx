@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense, useContext } from "react";
 import { Editor, convertFromRaw, EditorState } from "draft-js";
 import { getPost } from "../../services/postServices";
 import { getAuthor } from "../../services/authServices";
@@ -6,10 +6,14 @@ import Moment from "react-moment";
 import Spinner from "../common/Spinner";
 import Loader from "react-loader-spinner";
 import "./Posts.css";
+import UserContext from "../context/UserContext";
+import Thumbnail from "../common/Thumbnail";
 
 const Avatar = lazy(() => import("../common/Avatar"));
 
 const Post = (props) => {
+  const { posts } = useContext(UserContext);
+
   const [post, setPost] = useState("");
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [author, setAuthor] = useState("");
@@ -18,14 +22,19 @@ const Post = (props) => {
   const postId = props.location.state.id;
 
   useEffect(() => {
-    async function fetchData() {
-      const post = await getPost(postId);
-      setPost(post);
-      setIsLoading(false);
-    }
+    if (posts.length > 0) {
+      const filter = posts.filter((post) => post._id === postId);
+      setPost(filter[0]);
+    } else {
+      async function fetchData() {
+        const post = await getPost(postId);
+        setPost(post);
+        setIsLoading(false);
+      }
 
-    setIsLoading(true);
-    fetchData();
+      setIsLoading(true);
+      fetchData();
+    }
   }, []);
 
   useEffect(() => {
@@ -35,9 +44,10 @@ const Post = (props) => {
     }
 
     if (post) {
+      document.title = post.title;
       const fromRaw = convertFromRaw(JSON.parse(post.content));
       setEditorState(EditorState.createWithContent(fromRaw));
-
+      setIsLoading(false);
       fetchData();
     }
   }, [post]);
@@ -48,14 +58,21 @@ const Post = (props) => {
         <div className="row">
           <div className="col-12 col-md-8">
             {isLoading ? (
-              <Loader type="ThreeDots" color="#00BFFF" height={80} width={80} />
+              <div className="loader-container">
+                <Loader
+                  type="ThreeDots"
+                  color="#00BFFF"
+                  height={80}
+                  width={80}
+                />
+              </div>
             ) : (
               <>
-                <img
-                  src={`http://localhost:5000/api/posts/${post._id}/thumbnail`}
-                  className="w-100"
-                  alt=""
-                />
+                {post.thumbnail ? (
+                  <Thumbnail image={post.thumbnail} className="w-100" />
+                ) : (
+                  "Loading..."
+                )}
 
                 <div className="article-header my-2">
                   <h1 className="m-0">{post.title}</h1>

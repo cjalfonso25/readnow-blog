@@ -18,10 +18,9 @@ const Login = (props) => {
       const data = await login(inputs.username, inputs.password);
 
       if (data.user) {
+        setError("");
         props.history.push("/dashboard");
       }
-
-      setError("");
     } catch (e) {
       setError("Invalid username or password.");
     }

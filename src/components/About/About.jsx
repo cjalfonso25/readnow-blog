@@ -9,14 +9,7 @@ const About = () => {
     <div className="about">
       <div className="container">
         <div className="row">
-          <div className="col-12 col-md-6">
-            <img
-              src="http://bigsnoozedigital.com/simpleblog/assets/img/business-businessman-contemporary-corporate-532220.jpg"
-              className="w-100"
-              alt=""
-            />
-          </div>
-          <div className="col-12 col-md-6">
+          <div className="col-12">
             <div className="about-me">
               <div className="about-me-content">
                 <p>Hello! I am</p>

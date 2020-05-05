@@ -23,7 +23,7 @@ export const getUserPost = async (id) => {
 };
 
 export const deleteUserPost = async (id) => {
-  const { data } = await axios.delete("http://localhost:5000/api/posts/" + id, {
+  const { data } = await axios.delete(`${apiUrl}/posts/${id}`, {
     headers: {
       Authorization: `Bearer ${getJwt()}`,
     },
