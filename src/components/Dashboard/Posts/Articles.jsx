@@ -14,16 +14,21 @@ const Articles = () => {
   }, []);
 
   const handleDelete = async (id) => {
+    const origUserPosts = userPosts;
+    const origPosts = posts;
+
+    const currentPosts = userPosts.filter((post) => post._id !== id);
+    const allPost = posts.filter((post) => post._id !== id);
+    setUserPosts(currentPosts);
+    setPosts(allPost);
+
     try {
       const post = await deleteUserPost(id);
-
-      const currentPosts = userPosts.filter((post) => post._id !== id);
-      const allPost = posts.filter((post) => post._id !== id);
-      setUserPosts(currentPosts);
-      setPosts(allPost);
       toast.success(`"${post.title}" has been deleted!`);
     } catch (e) {
       toast.error("Something went wrong. Please try again.");
+      setUserPosts(origUserPosts);
+      setPosts(origPosts);
     }
   };
 
