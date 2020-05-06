@@ -1,17 +1,16 @@
 import React from "react";
 
-const Input = ({
+const Checkbox = ({
   name,
   label,
-  type = "text",
+  type = "checkbox",
   onChange,
   placeholder,
-  className = "form-control",
+  className = "custom-control-input",
   ...rest
 }) => {
   return (
-    <div className="form-group">
-      <label htmlFor={name}>{label}</label>
+    <div className="custom-control custom-checkbox">
       <input
         {...rest}
         type={type}
@@ -21,8 +20,11 @@ const Input = ({
         placeholder={placeholder}
         onChange={onChange}
       />
+      <label className="custom-control-label" htmlFor={name}>
+        {label}
+      </label>
     </div>
   );
 };
 
-export default Input;
+export default Checkbox;

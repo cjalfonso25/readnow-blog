@@ -8,7 +8,7 @@ import {
   convertFromRaw,
 } from "draft-js";
 import { toast } from "react-toastify";
-import { BLOCK_TYPES, INLINE_STYLES } from "../../../utils/richUtils";
+
 import {
   getUserPost,
   createPost,
@@ -19,7 +19,14 @@ import {
 } from "../../../services/postServices";
 import { apiUrl } from "../../../config.json";
 import UserContext from "../../context/UserContext";
+import Checkbox from "../../common/Checkbox";
+import Input from "../../common/Input";
+import DraftInput from "../../common/DraftInput";
+import Button from "../../common/Button";
 import "./AddPost.css";
+import Select from "../../common/Select";
+import FileInput from "../../common/FileInput";
+import Image from "../../common/Image";
 
 const AddPost = (props) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -32,6 +39,7 @@ const AddPost = (props) => {
   const [preview, setPreview] = useState("");
   const [isPublishing, setIsPublishing] = useState(false);
   const history = useHistory();
+
   const id = props.match.params.id;
 
   const { userPosts, posts, setUserPosts, setPosts } = useContext(UserContext);
@@ -67,41 +75,6 @@ const AddPost = (props) => {
       setCategory("");
     }
   }, [editPost]);
-
-  const focusEditor = () => {
-    editor.current.focus();
-  };
-
-  const handleKeyCommand = (command) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
-    if (newState) {
-      setEditorState(newState);
-    }
-  };
-
-  const toggleInlineStyle = (e) => {
-    e.preventDefault();
-    let style = e.target.getAttribute("data-style");
-    setEditorState(RichUtils.toggleInlineStyle(editorState, style));
-  };
-
-  const toggleBlockStyle = (e) => {
-    let style = e.target.getAttribute("data-style");
-    setEditorState(RichUtils.toggleBlockType(editorState, style));
-  };
-
-  const editor = useRef(null);
-
-  const myBlockStyleFn = (contentBlock) => {
-    const type = contentBlock.getType();
-    if (type === "code-block") {
-      return "code-block";
-    }
-
-    if (type === "blockquote") {
-      return "blockquote";
-    }
-  };
 
   const handleAdd = async () => {
     setIsPublishing(true);
@@ -181,81 +154,33 @@ const AddPost = (props) => {
         <div className="card post__add">
           <div className="card-header d-flex justify-content-between">
             <h6 className="m-0">{!id ? "Add New Post" : "Edit Post"}</h6>
-            <div className="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="featured"
-                checked={isFeatured}
-                onChange={(e) => setIsFeatured(e.target.checked)}
-              />
-              <label className="custom-control-label" htmlFor="featured">
-                Set as Featured?
-              </label>
-            </div>
+            <Checkbox
+              label="Set as Featured?"
+              name="featured"
+              onChange={(e) => setIsFeatured(e.target.checked)}
+            />
           </div>
           <div className="card-body">
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="title">Summary</label>
-              <input
-                type="text"
-                className="form-control"
-                id="summary"
-                placeholder="Summary"
-                value={summary}
-                onChange={(e) => setSummary(e.target.value)}
-              />
-            </div>
-            <div onClick={() => focusEditor()} className="form-group">
-              <label htmlFor="content">Content</label>
-              <div className="content-editor">
-                <div className="controls-wrapper">
-                  {/* BLOCK TYPES CONTROLS */}
-                  {BLOCK_TYPES.map((type) => (
-                    <button
-                      key={type.label}
-                      onMouseDown={(e) => toggleBlockStyle(e)}
-                      data-style={type.style}
-                      className="btn"
-                    >
-                      {type.label}
-                    </button>
-                  ))}
-
-                  {/* INLINE STYLES CONTROLS */}
-                  {INLINE_STYLES.map((type) => (
-                    <button
-                      key={type.label}
-                      onMouseDown={(e) => toggleInlineStyle(e)}
-                      data-style={type.style}
-                      className="btn"
-                    >
-                      {type.label}
-                    </button>
-                  ))}
-                </div>
-
-                <Editor
-                  placeholder="Enter your content here"
-                  ref={editor}
-                  editorState={editorState}
-                  blockStyleFn={(contentBlock) => myBlockStyleFn(contentBlock)}
-                  handleKeyCommand={(command) => handleKeyCommand(command)}
-                  onChange={(editorState) => setEditorState(editorState)}
-                />
-              </div>
-            </div>
+            <Input
+              label="Title"
+              name="title"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Input
+              label="Summary"
+              name="summary"
+              placeholder="Summary"
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+            />
+            <DraftInput
+              label="Content"
+              name="content"
+              editorState={editorState}
+              setEditorState={setEditorState}
+            />
           </div>
         </div>
       </div>
@@ -269,31 +194,27 @@ const AddPost = (props) => {
             <div className="d-flex justify-content-between">
               <button className="btn btn-sm btn-outline-danger">Discard</button>
               {id ? (
-                <button
-                  onClick={() => handleUpdate()}
-                  className="btn btn-sm btn-primary"
+                <Button
+                  label={isPublishing ? "Updating..." : "Update"}
+                  className="btn-sm btn-primary"
                   disabled={
                     title == "" || summary == "" || isPublishing
                       ? "disabled"
                       : false
                   }
-                >
-                  {isPublishing ? "Updating..." : "Update"}
-                </button>
+                  onClick={handleUpdate}
+                />
               ) : (
-                <button
-                  onClick={
-                    title == "" || summary == "" ? null : () => handleAdd()
-                  }
-                  className="btn btn-sm btn-primary"
+                <Button
+                  label={isPublishing ? "Publishing..." : "Publish Now"}
+                  className="btn-sm btn-primary"
                   disabled={
                     title == "" || summary == "" || isPublishing
                       ? "disabled"
                       : false
                   }
-                >
-                  {isPublishing ? "Publishing..." : "Publish Now"}
-                </button>
+                  onClick={title == "" || summary == "" ? null : handleAdd}
+                />
               )}
             </div>
           </div>
@@ -304,23 +225,18 @@ const AddPost = (props) => {
             <h6 className="m-0">Category</h6>
           </div>
           <div className="card-body">
-            <div className="input-group mb-3">
-              <select
-                className="custom-select"
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option defaultValue>Choose...</option>
-                <option value="Sports">Sports</option>
-                <option value="Food">Food</option>
-                <option value="Lifestyle">Lifestyle</option>
-                <option value="Politics">Politics</option>
-              </select>
-            </div>
-            <button className="btn btn-sm btn-link mt-2">
-              + Add new category
-            </button>
+            <Select
+              name="category"
+              className="custom-select"
+              divClass="input-group mb-3"
+              options={["Sports", "Food", "Lifestyle", "Politics"]}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+            <Button
+              label="+ Add new category"
+              className="btn-sm btn-link mt-2"
+            />
           </div>
         </div>
 
@@ -329,19 +245,13 @@ const AddPost = (props) => {
             <h6 className="m-0">Upload Thumbnail</h6>
           </div>
           <div className="card-body">
-            <img className="w-100 my-2" src={preview} alt="" />
-
-            <div className="custom-file mt-1">
-              <input
-                type="file"
-                className="custom-file-input"
-                id="customFile"
-                onChange={(e) => handleFileSelect(e)}
-              />
-              <label className="custom-file-label" htmlFor="customFile">
-                Choose file
-              </label>
-            </div>
+            <Image className="w-100 my-2" src={preview} />
+            <FileInput
+              label="Choose File"
+              name="customFile"
+              divClass="custom-file mt-1"
+              onChange={(e) => handleFileSelect(e)}
+            />
           </div>
         </div>
       </div>
