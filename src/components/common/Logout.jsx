@@ -5,7 +5,7 @@ const Logout = () => {
   useEffect(() => {
     logout();
 
-    window.location = "/";
+    window.location = "/projects/readnow";
   }, []);
 
   return null;

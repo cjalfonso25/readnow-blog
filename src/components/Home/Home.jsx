@@ -24,13 +24,17 @@ const Home = () => {
         }
       >
         <Switch>
-          <Route path="/contact-us" component={Contact} />
-          <Route path="/articles/:id" component={Post} />
-          <Route path="/articles" component={Posts} />
-          <Route path="/about" component={About} />
-          <Route path="/home" component={Readnow} />
-          <Redirect from="/" exact to="/home" />
-          <Redirect to="/not-found" />
+          <Route path="/projects/readnow/contact-us" component={Contact} />
+          <Route path="/projects/readnow/articles/:id" component={Post} />
+          <Route path="/projects/readnow/articles" component={Posts} />
+          <Route path="/projects/readnow/about" component={About} />
+          <Route path="/projects/readnow/home" component={Readnow} />
+          <Redirect
+            from="/projects/readnow"
+            exact
+            to="/projects/readnow/home"
+          />
+          <Redirect to="/projects/readnow/not-found" />
         </Switch>
       </Suspense>
       <Footer />

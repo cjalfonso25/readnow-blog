@@ -50,14 +50,18 @@ const Users = () => {
                     <tr key={user._id}>
                       <th scope="row">{i + 1}</th>
                       <td>
-                        <Link to={`/dashboard/users/${user._id}`}>
+                        <Link
+                          to={`/projects/readnow/dashboard/users/${user._id}`}
+                        >
                           {user.name}
                         </Link>
                       </td>
                       <td>{user.title}</td>
                       <td>{user.role}</td>
                       <td>
-                        <Link to={`/dashboard/users/edit/${user._id}`}>
+                        <Link
+                          to={`/projects/readnow/dashboard/users/edit/${user._id}`}
+                        >
                           <i className="fas fa-pen mr-3"></i>
                         </Link>
                         <i
@@ -72,7 +76,7 @@ const Users = () => {
                     <td colSpan={5} className="text-center">
                       <small className="text-muted">
                         No users found.
-                        <Link to="/dashboard/articles/users/add">
+                        <Link to="/projects/readnow/dashboard/articles/users/add">
                           {" "}
                           Click here to add user.
                         </Link>

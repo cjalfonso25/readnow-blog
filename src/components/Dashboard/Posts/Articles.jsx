@@ -53,7 +53,7 @@ const Articles = () => {
                       <td>
                         <Link
                           to={{
-                            pathname: `/articles/${post.title
+                            pathname: `/projects/readnow/articles/${post.title
                               .toLowerCase()
                               .replace(/\s+/g, "_")}`,
                             state: { id: post._id },
@@ -73,7 +73,9 @@ const Articles = () => {
                         </Moment>
                       </td>
                       <td>
-                        <Link to={`/dashboard/articles/edit/${post._id}`}>
+                        <Link
+                          to={`/projects/readnow/dashboard/articles/edit/${post._id}`}
+                        >
                           <i className="fas fa-pen mr-3"></i>
                         </Link>
                         <i
@@ -88,7 +90,7 @@ const Articles = () => {
                     <td colSpan={4} className="text-center">
                       <small className="text-muted">
                         No posts found.
-                        <Link to="/dashboard/articles/add">
+                        <Link to="/projects/readnow/dashboard/articles/add">
                           {" "}
                           Write one now!
                         </Link>

@@ -24,16 +24,16 @@ const Footer = () => {
               <p className="footer-title">Info</p>
               <ul>
                 <li>
-                  <Link to="/">Home</Link>
+                  <Link to="/projects/readnow">Home</Link>
                 </li>
                 <li>
-                  <Link to="/about">About</Link>
+                  <Link to="/projects/readnow/about">About</Link>
                 </li>
                 <li>
-                  <Link to="/articles">Articles</Link>
+                  <Link to="/projects/readnow/articles">Articles</Link>
                 </li>
                 <li>
-                  <Link to="/contact-us">Contact</Link>
+                  <Link to="/projects/readnow/contact-us">Contact</Link>
                 </li>
               </ul>
             </div>

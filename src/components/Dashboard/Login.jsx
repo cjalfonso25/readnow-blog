@@ -19,7 +19,7 @@ const Login = (props) => {
 
       if (data.user) {
         setError("");
-        props.history.push("/dashboard");
+        props.history.push("/projects/readnow/dashboard");
       }
     } catch (e) {
       setError("Invalid username or password.");

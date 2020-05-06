@@ -10,7 +10,7 @@ const DisplayArticles = ({ pageData }) => {
         <div key={post._id} className="col-12 col-md-4">
           <Link
             to={{
-              pathname: `/articles/${post.title
+              pathname: `/projects/readnow/articles/${post.title
                 .toLowerCase()
                 .replace(/\s+/g, "_")}`,
               state: { id: post._id },

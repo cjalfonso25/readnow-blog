@@ -55,13 +55,19 @@ function App() {
   return (
     <UserContext.Provider value={providerValue}>
       <Switch>
-        <Route path="/set-new-password" component={SetNewPassword} />
-        <Route path="/otp" component={Otp} />
-        <Route path="/logout" component={Logout} />
-        <Route path="/login/problem" component={Problem} />
-        <Route path="/login" component={Login} />
-        <PrivateRoute path="/dashboard" component={Dashboard} />
-        <PublicRoute path="/" component={Home} />
+        <Route
+          path="/projects/readnow/set-new-password"
+          component={SetNewPassword}
+        />
+        <Route path="/projects/readnow/otp" component={Otp} />
+        <Route path="/projects/readnow/logout" component={Logout} />
+        <Route path="/projects/readnow/login/problem" component={Problem} />
+        <Route path="/projects/readnow/login" component={Login} />
+        <PrivateRoute
+          path="/projects/readnow/dashboard"
+          component={Dashboard}
+        />
+        <PublicRoute path="/projects/readnow" component={Home} />
       </Switch>
     </UserContext.Provider>
   );

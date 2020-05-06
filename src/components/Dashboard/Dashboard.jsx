@@ -56,15 +56,40 @@ const Dashboard = () => {
             }
           >
             <Switch>
-              <Route path="/dashboard/settings" component={Settings} />
-              <Route path="/dashboard/users/add" component={AddUser} />
-              <Route path="/dashboard/user_list" component={Users} />
-              <Route path="/dashboard/articles/edit/:id" component={AddPost} />
-              <Route path="/dashboard/articles/add" component={AddPost} />
-              <Route path="/dashboard/articles" component={Articles} />
-              <Route path="/dashboard/profile" component={Profile} />
-              <Route exact path="/dashboard" component={Main} />
-              <Redirect to="not-found" />
+              <Route
+                path="/projects/readnow/dashboard/settings"
+                component={Settings}
+              />
+              <Route
+                path="/projects/readnow/dashboard/users/add"
+                component={AddUser}
+              />
+              <Route
+                path="/projects/readnow/dashboard/user_list"
+                component={Users}
+              />
+              <Route
+                path="/projects/readnow/dashboard/articles/edit/:id"
+                component={AddPost}
+              />
+              <Route
+                path="/projects/readnow/dashboard/articles/add"
+                component={AddPost}
+              />
+              <Route
+                path="/projects/readnow/dashboard/articles"
+                component={Articles}
+              />
+              <Route
+                path="/projects/readnow/dashboard/profile"
+                component={Profile}
+              />
+              <Route
+                exact
+                path="/projects/readnow/dashboard"
+                component={Main}
+              />
+              <Redirect to="/projects/readnow/not-found" />
             </Switch>
           </Suspense>
         </div>

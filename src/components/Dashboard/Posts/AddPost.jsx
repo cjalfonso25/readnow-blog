@@ -30,6 +30,7 @@ const AddPost = (props) => {
   const [isFeatured, setIsFeatured] = useState(false);
   const [editPost, setEditPost] = useState("");
   const [preview, setPreview] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
   const history = useHistory();
   const id = props.match.params.id;
 
@@ -103,6 +104,7 @@ const AddPost = (props) => {
   };
 
   const handleAdd = async () => {
+    setIsPublishing(true);
     const data = new FormData();
     data.append("file", thumbnail);
 
@@ -123,13 +125,16 @@ const AddPost = (props) => {
       toast.success(`${post.title} has been published!`);
       setThumbnail("");
       setPreview("");
-      history.push("/dashboard/articles");
+      setIsPublishing(false);
+      history.push("/projects/readnow/dashboard/articles");
     } catch (e) {
       toast.error("Something's happened. Please try again.");
     }
   };
 
   const handleUpdate = async () => {
+    setIsPublishing(true);
+
     try {
       const data = new FormData();
 
@@ -157,8 +162,9 @@ const AddPost = (props) => {
 
       setThumbnail("");
       setPreview("");
+      setIsPublishing(false);
       toast.success(`"${title}" has been updated successfully!`);
-      history.push("/dashboard/articles");
+      history.push("/projects/readnow/dashboard/articles");
     } catch (e) {
       toast.error("Something's happened. Please try again.");
     }
@@ -266,8 +272,13 @@ const AddPost = (props) => {
                 <button
                   onClick={() => handleUpdate()}
                   className="btn btn-sm btn-primary"
+                  disabled={
+                    title == "" || summary == "" || isPublishing
+                      ? "disabled"
+                      : false
+                  }
                 >
-                  Update
+                  {isPublishing ? "Updating..." : "Update"}
                 </button>
               ) : (
                 <button
@@ -275,9 +286,13 @@ const AddPost = (props) => {
                     title == "" || summary == "" ? null : () => handleAdd()
                   }
                   className="btn btn-sm btn-primary"
-                  disabled={title == "" || summary == "" ? "disabled" : false}
+                  disabled={
+                    title == "" || summary == "" || isPublishing
+                      ? "disabled"
+                      : false
+                  }
                 >
-                  Publish Now
+                  {isPublishing ? "Publishing..." : "Publish Now"}
                 </button>
               )}
             </div>

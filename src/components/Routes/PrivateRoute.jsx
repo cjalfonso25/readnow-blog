@@ -7,7 +7,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        getCurrentUser() ? <Component {...props} /> : <Redirect to="/login" />
+        getCurrentUser() ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/projects/readnow/login" />
+        )
       }
     />
   );

@@ -37,19 +37,19 @@ const Sidebar = () => {
           </div>
           <h5 className="user__name text-center">{user ? user.name : ""}</h5>
           <p className="text-center m-0 ">
-            <Link to="/dashboard/profile">
+            <Link to="/projects/readnow/dashboard/profile">
               <small className="text-muted ">Edit Profile</small>
             </Link>
           </p>
           <p className="text-center m-0 ">
-            <Link to="/">
+            <Link to="/projects/readnow">
               <small className="text-muted ">Visit website</small>
             </Link>
           </p>
         </div>
         <div className="menu__container">
           <ul className="list-unstyled">
-            <NavLink to="/dashboard">
+            <NavLink to="/projects/readnow/dashboard">
               <li className="menu__item">
                 <i className="fas fa-th-large"></i> Dashboard
               </li>
@@ -72,10 +72,10 @@ const Sidebar = () => {
               className="list-unstyled collapse menu__sub-menu"
               id="articles__sub-menu"
             >
-              <NavLink to="/dashboard/articles">
+              <NavLink to="/projects/readnow/dashboard/articles">
                 <li className="menu__sub-item">View All Post</li>
               </NavLink>
-              <NavLink to="/dashboard/articles/add">
+              <NavLink to="/projects/readnow/dashboard/articles/add">
                 <li className="menu__sub-item">Add Post</li>
               </NavLink>
             </ul>
@@ -100,21 +100,21 @@ const Sidebar = () => {
               className="list-unstyled collapse menu__sub-menu"
               id="users__sub-menu"
             >
-              <NavLink to="/dashboard/user_list">
+              <NavLink to="/projects/readnow/dashboard/user_list">
                 <li className="menu__sub-item">View Users</li>
               </NavLink>
-              <NavLink to="/dashboard/users/add">
+              <NavLink to="/projects/readnow/dashboard/users/add">
                 <li className="menu__sub-item">Add New User</li>
               </NavLink>
             </ul>
-            <NavLink to="/dashboard/settings">
+            <NavLink to="/projects/readnow/dashboard/settings">
               <li className="menu__item">
                 <i className="fas fa-cogs"></i> Settings
               </li>
             </NavLink>
           </ul>
           <div className="logout-container text-center">
-            <Link className="btn btn-danger" to="/logout">
+            <Link className="btn btn-danger" to="/projects/readnow/logout">
               Logout
             </Link>
           </div>
