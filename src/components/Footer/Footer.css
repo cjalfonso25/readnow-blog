@@ -26,6 +26,12 @@ footer ul li a:hover {
 footer .footer-info {
   margin-left: 30%;
 }
+footer .footer-social .fas {
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+}
+
 footer .footer-social .social-list {
   display: flex;
 }
@@ -44,6 +50,15 @@ footer .copyright {
   }
   footer a {
     font-size: 12px;
+  }
+
+  footer .footer-info {
+    margin-left: 0;
+  }
+
+  footer .footer-social .social-list li {
+    margin: 0;
+    margin-right: 8px;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {

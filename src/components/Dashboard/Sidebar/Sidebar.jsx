@@ -35,7 +35,13 @@ const Sidebar = () => {
               <Loader type="ThreeDots" color="#00BFFF" height={30} width={30} />
             )}
           </div>
-          <h5 className="user__name text-center">{user ? user.name : ""}</h5>
+          <h5 className="user__name text-center">
+            {user ? (
+              user.name
+            ) : (
+              <Loader type="ThreeDots" color="#00BFFF" height={30} width={30} />
+            )}
+          </h5>
           <p className="text-center m-0 ">
             <Link to="/projects/readnow/dashboard/profile">
               <small className="text-muted ">Edit Profile</small>

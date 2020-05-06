@@ -45,7 +45,7 @@ const Footer = () => {
               <ul>
                 <li>
                   <div className="d-flex justify-content-start">
-                    <i className="fas fa-map-marker-alt m-1 mr-3"></i>
+                    <i className="fas fa-map-marker-alt"></i>
                     <p>
                       203 Fake St. Mountain View, San Fernando, Pampanga, PH
                     </p>
@@ -53,13 +53,13 @@ const Footer = () => {
                 </li>
                 <li>
                   <div className="d-flex justify-content-start">
-                    <i className="fas fa-envelope m-1 mr-3"></i>
+                    <i className="fas fa-envelope"></i>
                     <p>info@yourdomain.com</p>
                   </div>
                 </li>
                 <li>
                   <div className="d-flex justify-content-start">
-                    <i className="fas fa-phone-alt m-1 mr-3"></i>
+                    <i className="fas fa-phone-alt"></i>
                     <p>+63 912-345-6789</p>
                   </div>
                 </li>
@@ -87,7 +87,7 @@ const Footer = () => {
       </div>
       <div className="copyright">
         <div className="container">
-          <small>Copyright 2020</small>
+          <small>&copy; Copyright 2020</small>
         </div>
       </div>
     </footer>

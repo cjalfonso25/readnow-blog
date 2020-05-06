@@ -15,18 +15,18 @@ import UserContext from "../../context/UserContext";
 const Avatar = lazy(() => import("../../common/Avatar"));
 
 const Profile = () => {
-  const [name, setName] = useState("");
-  const [title, setTitle] = useState("");
-  const [about, setAbout] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [twitter, setTwitter] = useState("");
-  const [insta, setInsta] = useState("");
+  const { user, setUser: setProviderUser } = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useState({
+    name: "",
+    title: "",
+    about: "",
+    facebook: "",
+    twitter: "",
+    instagram: "",
+  });
   const [avatar, setAvatar] = useState("");
   const [fileInput, setFileInput] = useState("");
   const [preview, setPreview] = useState("");
-  const [loaded, setLoaded] = useState(0);
-
-  const { user, setUser: setProviderUser } = useContext(UserContext);
 
   useEffect(() => {
     document.title = "Profile - Readnow";
@@ -34,27 +34,20 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
-      setTitle(user.title);
-      setAbout(user.about);
-      setFacebook(user.facebook);
-      setTwitter(user.twitter);
-      setInsta(user.insta);
+      setCurrentUser({
+        name: user.name,
+        title: user.title,
+        about: user.about,
+        facebook: user.facebook,
+        twitter: user.twitter,
+        instagram: user.insta,
+      });
     }
   }, [user]);
 
   const handleUpdate = async () => {
     try {
-      const updates = {
-        name: inputs.name,
-        title: inputs.title,
-        about: inputs.about,
-        facebook: inputs.facebook,
-        twitter: inputs.twitter,
-        instagram: inputs.instagram,
-      };
-
-      const data = await updateProfile(updates);
+      const data = await updateProfile(currentUser);
 
       setProviderUser(data);
       toast.success("Profile has been updated!");
@@ -63,10 +56,13 @@ const Profile = () => {
     }
   };
 
+  const handleInputChange = (e) => {
+    setCurrentUser({ ...currentUser, [e.target.name]: e.target.value });
+  };
+
   const handleFileSelect = (e) => {
     setPreview(URL.createObjectURL(e.target.files[0]));
     setAvatar(e.target.files[0]);
-    setLoaded(0);
   };
 
   const handleUpload = async () => {
@@ -87,8 +83,6 @@ const Profile = () => {
       toast.error(`Something went wrong. Please try again. Error: ${e}`);
     }
   };
-
-  const { inputs, handleInputChange, handleSubmit } = useForm(handleUpdate);
 
   return (
     <div className="profile">
@@ -124,16 +118,16 @@ const Profile = () => {
                         onClick={handleUpload}
                       />
 
-                      <h4>{name}</h4>
-                      <p>{title}</p>
+                      <h4>{currentUser.name}</h4>
+                      <p>{currentUser.title}</p>
                       <div className="social-holder">
-                        <a href={user.facebook ? facebook : "# "}>
+                        <a href={user.facebook ? currentUser.facebook : "# "}>
                           <i className="fab fa-facebook fa-2x"></i>
                         </a>
-                        <a href={user.twitter ? twitter : "# "}>
+                        <a href={user.twitter ? currentUser.twitter : "# "}>
                           <i className="fab fa-twitter fa-2x"></i>
                         </a>
-                        <a href={user.instagram ? insta : "# "}>
+                        <a href={user.instagram ? currentUser.instagram : "# "}>
                           <i className="fab fa-instagram fa-2x"></i>
                         </a>
                       </div>
@@ -146,18 +140,16 @@ const Profile = () => {
                       <Input
                         label="Name"
                         name="name"
-                        type="text"
-                        value={inputs.name || name}
-                        onChange={handleInputChange}
+                        value={currentUser.name}
+                        onChange={(e) => handleInputChange(e)}
                         required="required"
                       />
 
                       <Input
                         label="Title"
                         name="title"
-                        type="text"
-                        value={inputs.title || title || ""}
-                        onChange={handleInputChange}
+                        value={currentUser.title || ""}
+                        onChange={(e) => handleInputChange(e)}
                         required="required"
                       />
 
@@ -165,42 +157,39 @@ const Profile = () => {
                         label="About me"
                         name="about"
                         rows={8}
-                        value={inputs.about || about || ""}
-                        onChange={handleInputChange}
+                        value={currentUser.about || ""}
+                        onChange={(e) => handleInputChange(e)}
                       />
 
                       <h4 className="mt-4">Social Accounts</h4>
                       <Input
                         label="Facebook"
                         name="facebook"
-                        type="text"
                         placeholder="https://facebook.com/username"
-                        value={inputs.facebook || facebook || ""}
-                        onChange={handleInputChange}
+                        value={currentUser.facebook || ""}
+                        onChange={(e) => handleInputChange(e)}
                       />
 
                       <Input
                         label="Twitter"
                         name="twitter"
-                        type="text"
-                        placeholder="Twitter url"
-                        value={inputs.twitter || twitter || ""}
-                        onChange={handleInputChange}
+                        placeholder="https://twitter.com/username"
+                        value={currentUser.twitter || ""}
+                        onChange={(e) => handleInputChange(e)}
                       />
 
                       <Input
                         label="Instagram"
                         name="instagram"
-                        type="text"
-                        placeholder="Instagram url"
-                        value={inputs.instagram || insta || ""}
-                        onChange={handleInputChange}
+                        placeholder="https://instagram.com/username"
+                        value={currentUser.instagram || ""}
+                        onChange={(e) => handleInputChange(e)}
                       />
 
                       <Button
                         className="btn-primary mt-3"
                         label="Save changes"
-                        onClick={handleSubmit}
+                        onClick={handleUpdate}
                       />
                     </div>
                   </div>
