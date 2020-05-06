@@ -1,12 +1,6 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Editor,
-  EditorState,
-  RichUtils,
-  convertToRaw,
-  convertFromRaw,
-} from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { toast } from "react-toastify";
 
 import {
@@ -29,20 +23,21 @@ import FileInput from "../../common/FileInput";
 import Image from "../../common/Image";
 
 const AddPost = (props) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [title, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
-  const [category, setCategory] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [isFeatured, setIsFeatured] = useState(false);
+  const { userPosts, posts, setUserPosts, setPosts } = useContext(UserContext);
+
+  const [currentPost, setCurrentPost] = useState({
+    title: "",
+    summary: "",
+    category: "",
+    isFeatured: false,
+  });
   const [editPost, setEditPost] = useState("");
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [thumbnail, setThumbnail] = useState("");
   const [preview, setPreview] = useState("");
   const [isPublishing, setIsPublishing] = useState(false);
   const history = useHistory();
-
   const id = props.match.params.id;
-
-  const { userPosts, posts, setUserPosts, setPosts } = useContext(UserContext);
 
   useEffect(() => {
     document.title = "Add New Post - Readnow";
@@ -58,10 +53,14 @@ const AddPost = (props) => {
 
   useEffect(() => {
     if (editPost._id) {
-      setTitle(editPost.title);
-      setSummary(editPost.summary);
-      setCategory(editPost.category);
-      setIsFeatured(editPost.isFeatured);
+      setCurrentPost({
+        title: editPost.title,
+        summary: editPost.summary,
+        category: editPost.category,
+        isFeatured: editPost.isFeatured,
+        content: editPost.content,
+        thumbnail: editPost.thumbnail,
+      });
       setPreview(`${apiUrl}/posts/${id}/thumbnail`);
 
       const fromRaw = convertFromRaw(JSON.parse(editPost.content));
@@ -69,10 +68,13 @@ const AddPost = (props) => {
     }
 
     if (!id) {
-      setTitle("");
-      setSummary("");
+      setCurrentPost({
+        title: "",
+        summary: "",
+        category: "",
+        isFeatured: false,
+      });
       setEditorState(EditorState.createEmpty());
-      setCategory("");
     }
   }, [editPost]);
 
@@ -81,24 +83,20 @@ const AddPost = (props) => {
     const data = new FormData();
     data.append("file", thumbnail);
 
-    const obj = {
-      title: title,
-      summary: summary,
-      content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
-      category: category,
-      isFeatured,
-    };
-
     try {
-      const res = await createPost(obj, data);
+      const res = await createPost(currentPost, data);
       const post = await getPost(res._id);
 
+      // UPDATE GLOBAL STATE
       setUserPosts([...userPosts, post]);
       setPosts([...posts, post]);
-      toast.success(`${post.title} has been published!`);
+
+      // EMPTY THUMBNAIL IMAGE
       setThumbnail("");
       setPreview("");
+
       setIsPublishing(false);
+      toast.success(`${post.title} has been published!`);
       history.push("/projects/readnow/dashboard/articles");
     } catch (e) {
       toast.error("Something's happened. Please try again.");
@@ -109,34 +107,28 @@ const AddPost = (props) => {
     setIsPublishing(true);
 
     try {
-      const data = new FormData();
-
-      editPost.title = title;
-      editPost.summary = summary;
-      editPost.content = JSON.stringify(
-        convertToRaw(editorState.getCurrentContent())
-      );
-      editPost.category = category;
-      editPost.isFeatured = isFeatured;
-
       // REQUEST ONLY IF THUMBNAIL HAS BEEN CHANGED/ADDED
+      let data;
       if (thumbnail) {
+        data = new FormData();
         data.append("file", thumbnail);
       }
 
-      await updatePost(id, editPost, thumbnail, data);
+      await updatePost(id, currentPost, thumbnail, data);
 
-      //update posts and userposts in context
+      // UPDATE POSTS AND USER'S POST IN GLOBAL STATE
       const updatedPosts = await getPosts();
       setPosts(updatedPosts);
 
       const updatedUserPosts = await getUserPosts();
       setUserPosts(updatedUserPosts);
 
+      // EMPTY THUMBNAIL IMAGE
       setThumbnail("");
       setPreview("");
+
       setIsPublishing(false);
-      toast.success(`"${title}" has been updated successfully!`);
+      toast.success(`"${currentPost.title}" has been updated successfully!`);
       history.push("/projects/readnow/dashboard/articles");
     } catch (e) {
       toast.error("Something's happened. Please try again.");
@@ -157,7 +149,10 @@ const AddPost = (props) => {
             <Checkbox
               label="Set as Featured?"
               name="featured"
-              onChange={(e) => setIsFeatured(e.target.checked)}
+              checked={currentPost.isFeatured}
+              onChange={(e) =>
+                setCurrentPost({ ...currentPost, isFeatured: e.target.checked })
+              }
             />
           </div>
           <div className="card-body">
@@ -165,21 +160,27 @@ const AddPost = (props) => {
               label="Title"
               name="title"
               placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={currentPost.title}
+              onChange={(e) =>
+                setCurrentPost({ ...currentPost, title: e.target.value })
+              }
             />
             <Input
               label="Summary"
               name="summary"
               placeholder="Summary"
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
+              value={currentPost.summary}
+              onChange={(e) =>
+                setCurrentPost({ ...currentPost, summary: e.target.value })
+              }
             />
             <DraftInput
               label="Content"
               name="content"
               editorState={editorState}
+              currentPost={currentPost}
               setEditorState={setEditorState}
+              setCurrentPost={setCurrentPost}
             />
           </div>
         </div>
@@ -198,7 +199,9 @@ const AddPost = (props) => {
                   label={isPublishing ? "Updating..." : "Update"}
                   className="btn-sm btn-primary"
                   disabled={
-                    title == "" || summary == "" || isPublishing
+                    currentPost.title === "" ||
+                    currentPost.summary === "" ||
+                    isPublishing
                       ? "disabled"
                       : false
                   }
@@ -209,11 +212,17 @@ const AddPost = (props) => {
                   label={isPublishing ? "Publishing..." : "Publish Now"}
                   className="btn-sm btn-primary"
                   disabled={
-                    title == "" || summary == "" || isPublishing
+                    currentPost.title === "" ||
+                    currentPost.summary === "" ||
+                    isPublishing
                       ? "disabled"
                       : false
                   }
-                  onClick={title == "" || summary == "" ? null : handleAdd}
+                  onClick={
+                    currentPost.title === "" || currentPost.summary === ""
+                      ? null
+                      : handleAdd
+                  }
                 />
               )}
             </div>
@@ -230,8 +239,10 @@ const AddPost = (props) => {
               className="custom-select"
               divClass="input-group mb-3"
               options={["Sports", "Food", "Lifestyle", "Politics"]}
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={currentPost.category}
+              onChange={(e) =>
+                setCurrentPost({ ...currentPost, category: e.target.value })
+              }
             />
             <Button
               label="+ Add new category"

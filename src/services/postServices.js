@@ -65,7 +65,7 @@ export const updatePost = async (id, post, thumbnail, image) => {
     },
   });
 
-  if (thumbnail) {
+  if (image !== undefined) {
     await axios.put(`${apiUrl}/posts/thumbnail/${id}`, image, {
       headers: {
         Authorization: `Bearer ${getJwt()}`,

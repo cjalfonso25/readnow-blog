@@ -1,12 +1,27 @@
 import React, { useRef } from "react";
-import { Editor, RichUtils } from "draft-js";
+import { Editor, RichUtils, convertToRaw } from "draft-js";
 import { BLOCK_TYPES, INLINE_STYLES } from "../../utils/richUtils";
 
-const DraftInput = ({ label, name, editorState, setEditorState }) => {
+const DraftInput = ({
+  label,
+  name,
+  editorState,
+  currentPost,
+  setEditorState,
+  setCurrentPost,
+}) => {
   const editor = useRef(null);
 
   const focusEditor = () => {
     editor.current.focus();
+  };
+
+  const handleEditorChange = (editorState) => {
+    setEditorState(editorState);
+    setCurrentPost({
+      ...currentPost,
+      content: JSON.stringify(convertToRaw(editorState.getCurrentContent())),
+    });
   };
 
   const handleKeyCommand = (command) => {
@@ -72,7 +87,7 @@ const DraftInput = ({ label, name, editorState, setEditorState }) => {
           editorState={editorState}
           blockStyleFn={(contentBlock) => myBlockStyleFn(contentBlock)}
           handleKeyCommand={(command) => handleKeyCommand(command)}
-          onChange={(editorState) => setEditorState(editorState)}
+          onChange={(editorState) => handleEditorChange(editorState)}
         />
       </div>
     </div>
